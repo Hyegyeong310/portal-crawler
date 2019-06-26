@@ -1,9 +1,12 @@
-const AWS = require("aws-sdk");
+const got = require('got');
 const cheerio = require("cheerio");
 const dynamoose = require("dynamoose");
-const got = require('got');
+const dotenv = require("dotenv");
 
-AWS.config.update({region: "ap-northeast-2"});
+dotenv.config();
+
+const AWS = require("aws-sdk");
+AWS.config.region = process.env.AWS_REGION;
 
 const PortalKeyword = dynamoose.model('PotalKeyword', {
     portal: {
@@ -52,10 +55,22 @@ exports.crawler = async function (event, context, callback) {
             daumKeywords.push({rank: i+1, keyword});
         });
         
-        console.log({
-            naver: naverKeywords,
-            daum: daumKeywords
-        });
+        // console.log({
+        //     naver: naverKeywords,
+        //     daum: daumKeywords
+        // });
+        
+        await new PortalKeyword({
+            portal: 'naver',
+            createdAt,
+            keywords: naverKeywords
+        }).save();
+        
+        await new PortalKeyword({
+            portal: 'daum',
+            createdAt,
+            keywords: daumKeywords
+        }).save();
         
         return callback(null, "success");
     } catch(err) {
