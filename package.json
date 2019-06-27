@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node handler.test.js"
+    "test": "node handler.test.js",
+    "deploy": "serverless deploy"
   },
   "keywords": [],
   "author": "",

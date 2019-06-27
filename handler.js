@@ -8,7 +8,7 @@ dotenv.config();
 const AWS = require("aws-sdk");
 AWS.config.region = process.env.AWS_REGION;
 
-const PortalKeyword = dynamoose.model('PotalKeyword', {
+const PortalKeyword = dynamoose.model('PortalKeyword', {
     portal: {
         type: String,
         hashKey: true
